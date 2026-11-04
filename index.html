@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naomi — Social Media, Marketing & Publicitate</title>
+<meta name="description" content="Portofoliu Naomi — social media, marketing și publicitate pentru branduri din auto și fashion.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0c0f; --bg2:#16131a; --ink:#f4efe9; --muted:#a59ea8;
+  --rose:#ff6b8b; --gold:#e8b86d; --violet:#8b6bff;
+  --grad:linear-gradient(120deg,var(--rose),var(--gold));
+  --serif:'Playfair Display',Georgia,serif; --sans:'Inter',system-ui,sans-serif;
+  --ease:cubic-bezier(.7,0,.2,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);overflow-x:hidden;line-height:1.6}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--rose);color:#fff}
+
+/* ---------- Loader (morph curtain) ---------- */
+#pt{position:fixed;inset:0;z-index:120;pointer-events:none}#pt svg{width:100%;height:100%}
+#loader{position:fixed;inset:0;z-index:100;display:grid;place-items:center;pointer-events:none}
+#loader svg{position:absolute;inset:0;width:100%;height:100%}
+#loader .ltxt{position:relative;font-family:var(--serif);font-size:clamp(2.5rem,8vw,6rem);font-style:italic;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;transition:opacity .5s, transform .8s var(--ease)}
+#loader.done .ltxt{opacity:0;transform:translateY(-40px)}
+
+/* ---------- Grain + cursor ---------- */
+body::after{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 1s steps(4) infinite}
+@keyframes grain{25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-2%)}}
+.cursor{position:fixed;top:0;left:0;width:34px;height:34px;border:1px solid var(--ink);border-radius:50%;
+  pointer-events:none;z-index:95;mix-blend-mode:difference;transform:translate(-50%,-50%);transition:width .3s,height .3s,background .3s}
+.cursor.big{width:80px;height:80px;background:var(--ink)}
+@media (hover:none){.cursor{display:none}}
+
+/* ---------- Nav ---------- */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
+  padding:1.1rem clamp(1.2rem,4vw,3rem);transition:background .4s, padding .4s}
+nav.scrolled{background:rgba(14,12,15,.7);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:.75rem clamp(1.2rem,4vw,3rem)}
+.logo{font-family:var(--serif);font-size:1.5rem;font-style:italic}
+.logo span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+nav ul{display:flex;gap:2rem;list-style:none;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase}
+nav ul a{position:relative;opacity:.8;transition:opacity .3s}
+nav ul a::after{content:"";position:absolute;left:0;bottom:-4px;width:100%;height:1px;background:var(--grad);transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
+nav ul a:hover{opacity:1}
+nav ul a:hover::after{transform:scaleX(1);transform-origin:left}
+.burger{display:none;background:none;border:0;width:30px;height:20px;position:relative;cursor:pointer}
+.burger i{position:absolute;left:0;width:100%;height:2px;background:var(--ink);transition:.4s var(--ease)}
+.burger i:nth-child(1){top:2px}.burger i:nth-child(2){bottom:2px}
+.burger.open i:nth-child(1){top:9px;transform:rotate(45deg)}
+.burger.open i:nth-child(2){bottom:9px;transform:rotate(-45deg)}
+.cv-btn{display:inline-flex;align-items:center;gap:.55rem}
+.cv-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .4s var(--ease)}
+.cv-btn:hover svg{animation:dl 1s var(--ease) infinite}
+@keyframes dl{0%{transform:translateY(-3px);opacity:0}40%{opacity:1}100%{transform:translateY(3px);opacity:0}}
+.nav-cv{padding:.4rem .9rem;border:1px solid rgba(255,255,255,.25);border-radius:100px}
+.nav-cv::after{display:none}
+@media(max-width:760px){
+  .burger{display:block;z-index:60}
+  nav ul{position:fixed;inset:0;flex-direction:column;justify-content:center;align-items:center;gap:1.6rem;font-size:1.6rem;
+    font-family:var(--serif);text-transform:none;letter-spacing:0;background:var(--bg2);
+    clip-path:circle(0% at calc(100% - 2.5rem) 2rem);transition:clip-path .8s var(--ease)}
+  nav ul.open{clip-path:circle(150% at calc(100% - 2.5rem) 2rem)}
+}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;min-height:100vh;min-height:100svh;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;
+  gap:2rem;padding:7rem clamp(1.2rem,6vw,6rem) 4rem;overflow:hidden}
+.hero .orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.45;will-change:transform}
+.orb.o1{width:420px;height:420px;background:var(--rose);top:-120px;left:-120px}
+.orb.o2{width:360px;height:360px;background:var(--violet);bottom:-140px;right:20%}
+.orb.o3{width:240px;height:240px;background:var(--gold);top:30%;right:-80px}
+.hero-txt{position:relative;z-index:2}
+.eyebrow{font-size:.8rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:1.2rem;display:flex;align-items:center;gap:.8rem}
+.eyebrow::before{content:"";width:40px;height:1px;background:var(--grad)}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(3.8rem,13vw,10rem);line-height:.9;letter-spacing:-.02em}
+h1 .ch{display:inline-block;transform:translateY(110%);opacity:0}
+.reveal-on h1 .ch{animation:charUp 1.1s var(--ease) forwards}
+@keyframes charUp{to{transform:none;opacity:1}}
+.line-mask{overflow:hidden;display:block;padding-bottom:.1em}
+.morph-wrap{position:relative;height:1.5em;font-family:var(--serif);font-style:italic;font-size:clamp(1.5rem,3.6vw,2.6rem);margin:.6rem 0 1.4rem;filter:url(#threshold) blur(.6px)}
+.morph-wrap span{position:absolute;left:0;top:0;white-space:nowrap;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{max-width:30rem;color:var(--muted);font-size:1.05rem}
+.btns{display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap}
+.btn{position:relative;overflow:hidden;padding:.95rem 1.8rem;border-radius:100px;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid rgba(255,255,255,.25);transition:color .5s var(--ease);isolation:isolate}
+.btn::before{content:"";position:absolute;inset:0;background:var(--grad);z-index:-1;border-radius:inherit;transform:translateY(101%);transition:transform .5s var(--ease)}
+.btn:hover::before,.btn.fill::before{transform:none}
+.btn.fill{border-color:transparent;color:#1a0f12;font-weight:600}
+.btn.fill:hover::before{transform:translateY(-101%)}
+.btn.fill:hover{color:var(--ink);border-color:rgba(255,255,255,.25)}
+
+.hero-visual{position:relative;z-index:2;aspect-ratio:1;width:min(100%,520px);justify-self:center}
+.hero-visual svg{width:100%;height:100%;overflow:visible}
+.badge{position:absolute;padding:.6rem 1rem;border-radius:100px;font-size:.8rem;background:rgba(255,255,255,.08);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15);white-space:nowrap;will-change:transform}
+.badge b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.b1{top:12%;left:-4%}.b2{bottom:18%;right:-4%}.b3{bottom:2%;left:12%}
+.scroll-hint{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:.6rem}
+.scroll-hint i{width:1px;height:40px;background:linear-gradient(var(--ink),transparent);animation:drip 2s infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@media(max-width:860px){
+  .hero{grid-template-columns:1fr;text-align:left;padding-top:6rem}
+  .hero-visual{width:min(80%,360px);order:-1}
+  .scroll-hint{display:none}
+}
+
+/* ---------- Marquee ---------- */
+.marquee{border-block:1px solid rgba(255,255,255,.1);padding:1.4rem 0;overflow:hidden;white-space:nowrap;transform:rotate(-2deg) scale(1.05);background:var(--bg2)}
+.marquee .track{display:inline-flex;gap:3rem;font-family:var(--serif);font-size:clamp(1.6rem,4vw,3rem);font-style:italic;will-change:transform}
+.marquee .track span:nth-child(even){-webkit-text-stroke:1px var(--ink);color:transparent}
+
+/* ---------- Sections ---------- */
+section{position:relative;padding:clamp(5rem,12vw,9rem) clamp(1.2rem,6vw,6rem)}
+.sec-head{margin-bottom:3.5rem}
+.sec-num{font-size:.8rem;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+h2{font-family:var(--serif);font-weight:500;font-size:clamp(2.4rem,6vw,4.6rem);line-height:1.05;margin-top:.6rem}
+h2 em{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* reveal utilities */
+.rv{opacity:0;transform:translateY(60px);transition:opacity 1s var(--ease),transform 1.2s var(--ease)}
+.rv.l{transform:translateX(-80px)}.rv.r{transform:translateX(80px)}
+.rv.in{opacity:1;transform:none}
+.clip{clip-path:inset(100% 0 0 0);transition:clip-path 1.3s var(--ease)}
+.clip.in{clip-path:inset(0 0 0 0)}
+
+/* ---------- About ---------- */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.about-photo{position:relative;aspect-ratio:4/5;border-radius:220px 220px 24px 24px;overflow:hidden}
+.about-photo .ph{position:absolute;inset:-15% 0;background:
+  radial-gradient(circle at 30% 30%,rgba(255,107,139,.85),transparent 55%),
+  radial-gradient(circle at 75% 70%,rgba(139,107,255,.8),transparent 55%),
+  radial-gradient(circle at 60% 20%,rgba(232,184,109,.7),transparent 50%),#241d29;will-change:transform}
+.about-photo .ph::after{content:"N";position:absolute;inset:0;display:grid;place-items:center;font-family:var(--serif);font-style:italic;font-size:14rem;color:rgba(255,255,255,.12)}
+.about-photo img{position:absolute;left:0;top:-8%;width:100%;height:116%;object-fit:cover;object-position:60% 15%;filter:saturate(.9) contrast(1.05);transition:filter .8s}
+.about-photo .ph::after{display:none}
+.about-photo .ph-tint{position:absolute;inset:0;background:linear-gradient(200deg,rgba(255,107,139,.28),transparent 45%,rgba(14,12,15,.75));mix-blend-mode:normal;transition:opacity .8s;pointer-events:none}
+.about-photo:hover .ph-tint{opacity:.4}
+.about-photo:hover img{filter:saturate(1.05) contrast(1.05)}
+.about-photo::after{content:"";position:absolute;inset:0;border-radius:inherit;border:1px solid rgba(255,255,255,.18);pointer-events:none}
+.about-txt p{color:var(--muted);font-size:1.08rem;margin-bottom:1.2rem}
+.about-txt p strong{color:var(--ink);font-weight:500}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.4rem}
+.stat{border-top:1px solid rgba(255,255,255,.15);padding-top:1rem}
+.stat b{display:block;font-family:var(--serif);font-size:clamp(2.2rem,5vw,3.4rem);font-weight:500;line-height:1}
+.stat small{color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.12em}
+@media(max-width:860px){.about-grid{grid-template-columns:1fr;gap:2.5rem}.about-photo{max-width:380px}}
+
+/* ---------- Industries (parallax panels) ---------- */
+.industries{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.ind{position:relative;height:clamp(380px,60vh,560px);border-radius:28px;overflow:hidden;cursor:pointer;transform-style:preserve-3d;transition:transform .2s}
+.ind .layer{position:absolute;inset:-12%;will-change:transform;transition:transform .2s linear}
+.ind.auto .bg{background:
+  linear-gradient(180deg,transparent 40%,rgba(14,12,15,.95)),
+  repeating-linear-gradient(100deg,transparent 0 60px,rgba(255,255,255,.035) 60px 62px),
+  radial-gradient(ellipse at 70% 30%,#3a4b6b,#121722 70%)}
+.ind.fashion .bg{background:
+  linear-gradient(180deg,transparent 40%,rgba(14,12,15,.95)),
+  repeating-radial-gradient(circle at 30% 40%,transparent 0 30px,rgba(255,255,255,.03) 30px 32px),
+  radial-gradient(ellipse at 30% 30%,#7a2f4a,#1f1018 70%)}
+.ind .shape{display:grid;place-items:center}
+.ind .shape svg{width:62%;opacity:.9;filter:drop-shadow(0 30px 40px rgba(0,0,0,.5))}
+.ind .info{position:absolute;left:0;right:0;bottom:0;padding:2rem;z-index:3}
+.ind .info h3{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);font-weight:500}
+.ind .info p{color:var(--muted);max-width:24rem;max-height:0;opacity:0;overflow:hidden;transition:max-height .7s var(--ease),opacity .5s}
+.ind:hover .info p,.ind.active .info p{max-height:8rem;opacity:1}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.8rem}
+.tags span{font-size:.72rem;padding:.35rem .8rem;border:1px solid rgba(255,255,255,.2);border-radius:100px;letter-spacing:.05em}
+@media(max-width:760px){.industries{grid-template-columns:1fr}.ind .info p{max-height:8rem;opacity:1}}
+
+/* ---------- Services (sticky stack) ---------- */
+.services{display:grid;grid-template-columns:.8fr 1.2fr;gap:4rem}
+.services .sticky{position:sticky;top:8rem;align-self:start}
+.services .sticky p{color:var(--muted);margin-top:1.2rem;max-width:22rem}
+.svc{display:grid;grid-template-columns:auto 1fr;gap:1.6rem;padding:2rem 0;border-bottom:1px solid rgba(255,255,255,.1);transition:padding .5s var(--ease)}
+.svc:hover{padding-left:1rem}
+.svc .n{font-family:var(--serif);font-style:italic;font-size:1.2rem;color:var(--gold)}
+.svc h4{font-family:var(--serif);font-weight:500;font-size:clamp(1.4rem,3vw,2rem);margin-bottom:.4rem}
+.svc p{color:var(--muted)}
+@media(max-width:860px){.services{grid-template-columns:1fr;gap:1rem}.services .sticky{position:relative;top:0}}
+
+/* ---------- Timeline ---------- */
+.timeline{position:relative;max-width:1000px;margin:0 auto}
+.tl-line{position:absolute;left:50%;top:0;bottom:0;width:2px;background:rgba(255,255,255,.1);transform:translateX(-50%)}
+.tl-line i{position:absolute;inset:0;background:var(--grad);transform-origin:top;transform:scaleY(0)}
+.tl-item{position:relative;width:50%;padding:0 3.5rem 4rem}
+.tl-item:nth-child(odd){margin-left:0;text-align:right}
+.tl-item:nth-child(even){margin-left:50%}
+.tl-dot{position:absolute;top:.4rem;width:18px;height:18px;border-radius:50%;background:var(--bg);border:2px solid rgba(255,255,255,.3);transition:.5s var(--ease)}
+.tl-item:nth-child(odd) .tl-dot{right:-9px}
+.tl-item:nth-child(even) .tl-dot{left:-9px}
+.tl-item.in .tl-dot{background:var(--rose);border-color:var(--rose);box-shadow:0 0 0 8px rgba(255,107,139,.15)}
+.tl-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:1.8rem;
+  transition:transform .5s var(--ease),border-color .5s,background .5s}
+.tl-card:hover{transform:translateY(-6px);border-color:rgba(255,107,139,.4);background:rgba(255,255,255,.05)}
+.tl-dur{display:inline-block;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;padding:.35rem .9rem;border-radius:100px;background:var(--grad);color:#1a0f12;font-weight:600}
+.tl-card h3{font-family:var(--serif);font-weight:500;font-size:1.9rem;margin:.8rem 0 .2rem}
+.tl-role{color:var(--gold);font-size:.9rem;margin-bottom:.8rem}
+.tl-card p{color:var(--muted);font-size:.95rem}
+.tl-card .tags{justify-content:inherit}
+.tl-item:nth-child(odd) .tags{justify-content:flex-end}
+.tl-big{position:absolute;top:-2.6rem;font-family:var(--serif);font-style:italic;font-size:6rem;line-height:1;color:rgba(255,255,255,.04);pointer-events:none;will-change:transform}
+.tl-item:nth-child(odd) .tl-big{right:3rem}.tl-item:nth-child(even) .tl-big{left:3rem}
+@media(max-width:760px){
+  .tl-line{left:9px}
+  .tl-item,.tl-item:nth-child(even){width:100%;margin-left:0;text-align:left;padding:0 0 3rem 2.6rem}
+  .tl-item:nth-child(odd) .tl-dot,.tl-item:nth-child(even) .tl-dot{left:0;right:auto}
+  .tl-item:nth-child(odd) .tags{justify-content:flex-start}
+  .tl-item:nth-child(odd) .tl-big,.tl-item:nth-child(even) .tl-big{left:auto;right:0}
+}
+
+/* ---------- Contact ---------- */
+.contact{text-align:center;overflow:hidden}
+.contact .blob-bg{position:absolute;left:50%;top:50%;width:min(900px,140vw);transform:translate(-50%,-50%);opacity:.35;pointer-events:none}
+.contact h2{font-size:clamp(3rem,10vw,8rem);line-height:.95;position:relative}
+.contact p{color:var(--muted);margin:1.5rem auto 2.5rem;max-width:30rem;position:relative}
+.contact .btns{justify-content:center;position:relative}
+.socials{display:flex;justify-content:center;gap:1.8rem;margin-top:3rem;position:relative;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase}
+.socials a{opacity:.7;transition:opacity .3s}.socials a:hover{opacity:1}
+footer{padding:2rem clamp(1.2rem,6vw,6rem);display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem;border-top:1px solid rgba(255,255,255,.08);flex-wrap:wrap;gap:.5rem}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .rv,.clip{opacity:1;transform:none;clip-path:none}
+  h1 .ch{transform:none;opacity:1}
+}
+</style>
+</head>
+<body>
+
+<!-- SVG filter pentru efectul de text morph -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <filter id="threshold"><feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 255 -140"/></filter>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff6b8b"/><stop offset=".55" stop-color="#e8b86d"/><stop offset="1" stop-color="#8b6bff"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#8b6bff"/><stop offset="1" stop-color="#ff6b8b"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- Loader -->
+<div id="loader">
+  <svg viewBox="0 0 100 100" preserveAspectRatio="none"><path id="loaderPath" fill="#16131a" d="M0 0 H100 V100 H0 Z"/></svg>
+  <div class="ltxt">Naomi</div>
+</div>
+
+<div id="pt"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><path id="ptPath" fill="#16131a" d="M0 100 H100 V100 Z"/></svg></div>
+<div class="cursor"></div>
+
+<nav id="nav">
+  <a href="#top" class="logo">N<span>.</span></a>
+  <button class="burger" aria-label="Meniu"><i></i><i></i></button>
+  <ul>
+    <li><a href="#despre">Despre</a></li>
+    <li><a href="#industrii">Industrii</a></li>
+    <li><a href="#servicii">Servicii</a></li>
+    <li><a href="#experienta">Experiență</a></li>
+    <li><a href="portofoliu.html">Portofoliu</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="CV-Naomi.pdf" download class="nav-cv">CV ↓</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="orb o1" data-speed="0.25" data-mouse="30"></div>
+  <div class="orb o2" data-speed="-0.15" data-mouse="-40"></div>
+  <div class="orb o3" data-speed="0.4" data-mouse="20"></div>
+
+  <div class="hero-txt">
+    <div class="eyebrow">Portofoliu · About me</div>
+    <h1><span class="line-mask" id="heroName">Naomi</span></h1>
+    <div class="morph-wrap" aria-label="Social Media, Marketing, Publicitate">
+      <span id="m1"></span><span id="m2"></span>
+    </div>
+    <p class="lead">Construiesc povești pentru branduri care vor să fie văzute — de la showroom-uri auto până la colecții de fashion. Strategie, conținut și campanii care transformă scroll-ul în interes.</p>
+    <div class="btns">
+      <a href="#experienta" class="btn fill magnet">Vezi experiența</a>
+      <a href="CV-Naomi.pdf" download class="btn magnet cv-btn"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14"/></svg>Descarcă CV</a>
+    </div>
+  </div>
+
+  <div class="hero-visual" data-speed="-0.1">
+    <svg viewBox="0 0 500 500">
+      <path id="blob2" fill="url(#g2)" opacity=".35"/>
+      <clipPath id="blobClip"><path id="blob1c"/></clipPath>
+      <g clip-path="url(#blobClip)">
+        <rect width="500" height="500" fill="url(#g1)"/>
+        <image href="naomi.jpg" x="-53" y="63" width="520" height="582" preserveAspectRatio="xMidYMid slice"/>
+        <rect width="500" height="500" fill="url(#g1)" opacity=".18" style="mix-blend-mode:soft-light"/>
+      </g>
+      <path id="blob1" fill="none" stroke="url(#g1)" stroke-width="2.5" opacity=".9"/>
+    </svg>
+    <div class="badge b1" data-mouse="25">📱 <b>Social Media</b></div>
+    <div class="badge b2" data-mouse="-30">🚗 Auto · 👗 <b>Fashion</b></div>
+    <div class="badge b3" data-mouse="15">✨ <b>6+ ani</b> experiență</div>
+  </div>
+
+  <div class="scroll-hint">Scroll<i></i></div>
+</header>
+
+<!-- MARQUEE -->
+<div class="marquee"><div class="track" id="track">
+  <span>Social Media</span><span>Marketing</span><span>Publicitate</span><span>Auto</span><span>Fashion</span><span>Content</span><span>Campanii</span>
+  <span>Social Media</span><span>Marketing</span><span>Publicitate</span><span>Auto</span><span>Fashion</span><span>Content</span><span>Campanii</span>
+</div></div>
+
+<!-- DESPRE -->
+<section id="despre">
+  <div class="about-grid">
+    <div class="about-photo clip">
+      <div class="ph" data-speed="0.12"></div>
+      <img src="naomi.jpg" alt="Naomi" class="ph-img" data-speed="0.08" loading="lazy">
+      <span class="ph-tint"></span>
+    </div>
+    <div class="about-txt">
+      <div class="sec-head rv">
+        <div class="sec-num">01 — Despre mine</div>
+        <h2>Salut, sunt <em>Naomi</em>.</h2>
+      </div>
+      <p class="rv">Lucrez în <strong>social media, marketing și publicitate</strong>, cu experiență pe branduri din industrii foarte diferite — de la <strong>auto</strong> la <strong>fashion</strong>.</p>
+      <p class="rv">Îmi place să găsesc vocea potrivită pentru fiecare brand: tehnică și convingătoare pentru mașini, estetică și emoțională pentru modă. Planific, creez și optimizez conținut și campanii care aduc rezultate reale.</p>
+      <div class="stats rv">
+        <div class="stat"><b data-count="6">0</b><small>Ani experiență</small></div>
+        <div class="stat"><b data-count="4">0</b><small>Branduri</small></div>
+        <div class="stat"><b data-count="2">0</b><small>Industrii</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRII -->
+<section id="industrii">
+  <div class="sec-head rv">
+    <div class="sec-num">02 — Industrii</div>
+    <h2>Două lumi, <em>un singur stil</em>.</h2>
+  </div>
+  <div class="industries">
+    <article class="ind auto rv l tilt">
+      <div class="layer bg" data-depth="10"></div>
+      <div class="layer shape" data-depth="30">
+        <svg viewBox="0 0 300 120" fill="none" stroke="url(#g1)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 85 Q22 62 50 58 L95 52 Q120 28 160 26 L205 28 Q235 32 258 55 L278 62 Q290 68 288 85 Z"/>
+          <path d="M105 52 Q128 34 160 33 L200 35 Q222 40 238 55 Z" opacity=".6"/>
+          <circle cx="80" cy="88" r="18"/><circle cx="230" cy="88" r="18"/>
+          <circle cx="80" cy="88" r="6"/><circle cx="230" cy="88" r="6"/>
+        </svg>
+      </div>
+      <div class="info">
+        <h3>Auto</h3>
+        <p>Comunicare pentru dealeri și showroom-uri: lansări de modele, stoc disponibil, test drive-uri și campanii de lead generation.</p>
+        <div class="tags"><span>Plus Auto</span><span>Prime Select Car</span></div>
+      </div>
+    </article>
+    <article class="ind fashion rv r tilt">
+      <div class="layer bg" data-depth="10"></div>
+      <div class="layer shape" data-depth="30">
+        <svg viewBox="0 0 200 220" fill="none" stroke="url(#g1)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M100 20 Q88 20 88 32 Q88 42 100 46 L100 56"/>
+          <path d="M100 56 L20 110 Q14 116 22 118 L178 118 Q186 116 180 110 Z"/>
+          <path d="M60 130 L40 205 L160 205 L140 130" opacity=".6"/>
+          <path d="M70 150 L130 150 M65 172 L135 172" opacity=".4"/>
+        </svg>
+      </div>
+      <div class="info">
+        <h3>Fashion</h3>
+        <p>Conținut vizual, colecții, campanii sezoniere și colaborări cu creatori — totul cu un feed coerent și estetic.</p>
+        <div class="tags"><span>Askar</span><span>Mareus</span></div>
+      </div>
+    </article>
+  </div>
+  <div class="btns rv" style="justify-content:center;margin-top:3rem">
+    <a href="portofoliu.html" class="btn fill magnet">Vezi portofoliul →</a>
+  </div>
+</section>
+
+<!-- SERVICII -->
+<section id="servicii">
+  <div class="services">
+    <div class="sticky rv">
+      <div class="sec-num">03 — Ce fac</div>
+      <h2>Servicii &<br><em>competențe</em></h2>
+      <p>De la idee la raportare — un proces complet, adaptat fiecărui brand și fiecărei platforme.</p>
+    </div>
+    <div>
+      <div class="svc rv"><span class="n">01</span><div><h4>Social Media Management</h4><p>Strategie, calendar editorial, community management și creștere organică pe Instagram, Facebook și TikTok.</p></div></div>
+      <div class="svc rv"><span class="n">02</span><div><h4>Content Creation</h4><p>Concepte foto/video, reels, copywriting și direcție vizuală pentru un feed coerent.</p></div></div>
+      <div class="svc rv"><span class="n">03</span><div><h4>Publicitate plătită</h4><p>Campanii Meta Ads și Google Ads, targetare, testare A/B și optimizare de buget.</p></div></div>
+      <div class="svc rv"><span class="n">04</span><div><h4>Campanii & lansări</h4><p>Lansări de produse și modele, evenimente, promoții sezoniere și colaborări cu influenceri.</p></div></div>
+      <div class="svc rv"><span class="n">05</span><div><h4>Analiză & raportare</h4><p>KPI-uri clare, rapoarte lunare și decizii bazate pe date.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENȚĂ -->
+<section id="experienta">
+  <div class="sec-head rv" style="text-align:center">
+    <div class="sec-num">04 — Experiență</div>
+    <h2>Drumul <em>de până acum</em></h2>
+  </div>
+  <div class="timeline">
+    <div class="tl-line"><i id="tlFill"></i></div>
+
+    <div class="tl-item rv l">
+      <span class="tl-big" data-speed="0.15">01</span>
+      <span class="tl-dot"></span>
+      <div class="tl-card">
+        <span class="tl-dur">2 ani</span>
+        <h3>Plus Auto</h3>
+        <div class="tl-role">Social Media & Marketing · Auto</div>
+        <p>Gestionarea conturilor de social media, conținut pentru modele noi și stoc, campanii de promovare și generare de lead-uri.</p>
+        <div class="tags"><span>Social Media</span><span>Ads</span><span>Lead gen</span></div>
+      </div>
+    </div>
+
+    <div class="tl-item rv r">
+      <span class="tl-big" data-speed="0.15">02</span>
+      <span class="tl-dot"></span>
+      <div class="tl-card">
+        <span class="tl-dur">1 an</span>
+        <h3>Askar</h3>
+        <div class="tl-role">Social Media & Marketing · Fashion</div>
+        <p>Conținut pentru colecții, campanii sezoniere, coordonare ședințe foto și creșterea comunității online.</p>
+        <div class="tags"><span>Content</span><span>Brand</span><span>Campanii</span></div>
+      </div>
+    </div>
+
+    <div class="tl-item rv l">
+      <span class="tl-big" data-speed="0.15">03</span>
+      <span class="tl-dot"></span>
+      <div class="tl-card">
+        <span class="tl-dur">1 an</span>
+        <h3>Prime Select Car</h3>
+        <div class="tl-role">Marketing & Publicitate · Auto</div>
+        <p>Promovarea stocului de autoturisme, campanii plătite, prezentări video și optimizarea anunțurilor.</p>
+        <div class="tags"><span>Meta Ads</span><span>Video</span><span>Anunțuri</span></div>
+      </div>
+    </div>
+
+    <div class="tl-item rv r">
+      <span class="tl-big" data-speed="0.15">04</span>
+      <span class="tl-dot"></span>
+      <div class="tl-card">
+        <span class="tl-dur">2 ani</span>
+        <h3>Mareus</h3>
+        <div class="tl-role">Social Media & Publicitate · Fashion</div>
+        <p>Strategie de comunicare, calendar editorial, colaborări cu creatori și campanii de vânzare.</p>
+        <div class="tags"><span>Strategie</span><span>Influenceri</span><span>Performance</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <svg class="blob-bg" viewBox="0 0 500 500"><path id="blob3" fill="url(#g1)"/></svg>
+  <div class="sec-num rv">05 — Contact</div>
+  <h2 class="rv">Hai să creăm<br><em>ceva memorabil</em>.</h2>
+  <p class="rv">Ai un brand care merită mai multă atenție? Scrie-mi și discutăm despre următoarea ta campanie.</p>
+  <div class="btns rv">
+    <a href="mailto:naomi@email.ro" class="btn fill magnet">naomi@email.ro</a>
+    <a href="tel:+40700000000" class="btn magnet">+40 700 000 000</a>
+    <a href="CV-Naomi.pdf" download class="btn magnet cv-btn"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14"/></svg>Descarcă CV</a>
+  </div>
+  <div class="socials rv">
+    <a href="#" target="_blank">Instagram</a>
+    <a href="#" target="_blank">LinkedIn</a>
+    <a href="#" target="_blank">TikTok</a>
+  </div>
+</section>
+
+<footer>
+  <span>© <span id="yr"></span> Naomi. Toate drepturile rezervate.</span>
+  <span>Social Media · Marketing · Publicitate</span>
+</footer>
+
+<script>
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const touch = matchMedia('(hover: none)').matches;
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+/* ---------- Split hero name into chars ---------- */
+const hn = document.getElementById('heroName');
+hn.innerHTML = [...hn.textContent].map((c,i)=>`<span class="ch" style="animation-delay:${.08*i}s">${c}</span>`).join('');
+
+/* ---------- Loader: morph curtain ---------- */
+(function(){
+  const p = document.getElementById('loaderPath'), L = document.getElementById('loader');
+  const start = () => document.body.classList.add('reveal-on');
+  if(reduce){ L.remove(); start(); return; }
+  setTimeout(()=>{
+    L.classList.add('done');
+    const t0 = performance.now(), dur = 1100;
+    const ease = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+    (function f(now){
+      const t = Math.min((now-t0)/dur,1), e = ease(t);
+      const edge = 100 - e*100;              // bottom edge going up
+      const curve = Math.sin(t*Math.PI)*30;   // bulge that morphs then flattens
+      p.setAttribute('d',`M0 0 H100 V${edge} Q50 ${edge-curve} 0 ${edge} Z`);
+      if(t<1) requestAnimationFrame(f); else L.remove();
+    })(t0);
+    setTimeout(start, 350);
+  }, 900);
+})();
+
+/* ---------- Text morph (Social Media → Marketing → Publicitate) ---------- */
+(function(){
+  const words = ['Social Media','Marketing','Publicitate','Auto & Fashion'];
+  const a = document.getElementById('m1'), b = document.getElementById('m2');
+  let i = 0, morph = 0, cool = 1.6, last = performance.now();
+  const MT = 1.1, CT = 2.2;
+  a.textContent = words[0]; b.textContent = words[1];
+  function setStyles(f){
+    b.style.filter = `blur(${Math.min(8/f-8,100)}px)`; b.style.opacity = Math.pow(f,.4);
+    const g = 1-f;
+    a.style.filter = `blur(${Math.min(8/g-8,100)}px)`; a.style.opacity = Math.pow(g,.4);
+  }
+  function loop(now){
+    const dt = (now-last)/1000; last = now;
+    cool -= dt;
+    if(cool<=0){
+      morph += dt; let f = morph/MT;
+      if(f>1){ cool = CT; f = 1; }
+      setStyles(f);
+      if(f===1){ i=(i+1)%words.length; a.textContent=words[i]; b.textContent=words[(i+1)%words.length]; morph=0;
+        a.style.filter='none';a.style.opacity=1;b.style.opacity=0; }
+    }
+    requestAnimationFrame(loop);
+  }
+  if(reduce){ a.textContent='Social Media · Marketing · Publicitate'; b.remove(); return; }
+  b.style.opacity = 0; requestAnimationFrame(loop);
+})();
+
+/* ---------- Organic morphing blobs ---------- */
+function blobPath(t, seed, cx=250, cy=250, r=170, amp=26, n=8){
+  const pts = [];
+  for(let k=0;k<n;k++){
+    const ang = k/n*Math.PI*2;
+    const rr = r + Math.sin(t*0.9 + k*1.7 + seed)*amp + Math.cos(t*0.6 + k*2.3 + seed*2)*amp*.6;
+    pts.push([cx+Math.cos(ang)*rr, cy+Math.sin(ang)*rr]);
+  }
+  let d = '';
+  for(let k=0;k<n;k++){
+    const p0=pts[(k-1+n)%n],p1=pts[k],p2=pts[(k+1)%n],p3=pts[(k+2)%n];
+    if(k===0) d+=`M${p1[0].toFixed(1)} ${p1[1].toFixed(1)}`;
+    const c1=[p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6];
+    const c2=[p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6];
+    d+=`C${c1[0].toFixed(1)} ${c1[1].toFixed(1)} ${c2[0].toFixed(1)} ${c2[1].toFixed(1)} ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`;
+  }
+  return d+'Z';
+}
+const b1c=document.getElementById('blob1c'), b1=document.getElementById('blob1'), b2=document.getElementById('blob2'), b3=document.getElementById('blob3');
+(function anim(now){
+  const t = reduce ? 0 : now/1000;
+  const d1=blobPath(t,0); b1.setAttribute('d', d1); b1c.setAttribute('d', d1);
+  b2.setAttribute('d', blobPath(t*.8,3,262,240,190,30));
+  b3.setAttribute('d', blobPath(t*.5,5,250,250,200,40));
+  if(!reduce) requestAnimationFrame(anim);
+})(0);
+
+/* ---------- Scroll parallax + nav + timeline progress + marquee ---------- */
+const speedEls = [...document.querySelectorAll('[data-speed]')];
+const nav = document.getElementById('nav'), fill = document.getElementById('tlFill'), tl = document.querySelector('.timeline');
+const track = document.getElementById('track');
+let mx=0,my=0, mqx=0, lastY=scrollY, vel=0;
+function onScroll(){
+  const y = scrollY;
+  nav.classList.toggle('scrolled', y>40);
+  if(reduce) return;
+  speedEls.forEach(el=>{
+    const r = el.getBoundingClientRect();
+    const off = (r.top + r.height/2 - innerHeight/2);
+    el.style.setProperty('--py', (off*parseFloat(el.dataset.speed)*-1).toFixed(1)+'px');
+    applyT(el);
+  });
+  const tr = tl.getBoundingClientRect();
+  const p = Math.min(Math.max((innerHeight*.6 - tr.top)/tr.height,0),1);
+  fill.style.transform = `scaleY(${p})`;
+}
+function applyT(el){
+  const py = el.style.getPropertyValue('--py')||'0px';
+  const m = parseFloat(el.dataset.mouse||0);
+  el.style.transform = `translate3d(${(mx*m).toFixed(1)}px, calc(${py} + ${(my*m).toFixed(1)}px),0)`;
+}
+addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+/* marquee: moves continuously + speeds up with scroll velocity */
+if(!reduce)(function mq(){
+  vel += (scrollY-lastY)*.15; lastY = scrollY; vel *= .9;
+  mqx -= 0.6 + Math.abs(vel)*.4;
+  const w = track.scrollWidth/2;
+  if(-mqx>w) mqx += w;
+  track.style.transform = `translateX(${mqx}px)`;
+  requestAnimationFrame(mq);
+})();
+
+/* ---------- Mouse parallax + cursor ---------- */
+const cur = document.querySelector('.cursor');
+const mouseEls = [...document.querySelectorAll('[data-mouse]')];
+if(!touch && !reduce){
+  let cx=0,cy=0,tx=0,ty=0;
+  addEventListener('mousemove',e=>{
+    tx=e.clientX; ty=e.clientY;
+    mx=(e.clientX/innerWidth-.5); my=(e.clientY/innerHeight-.5);
+    mouseEls.forEach(applyT);
+  });
+  (function c(){ cx+=(tx-cx)*.18; cy+=(ty-cy)*.18; cur.style.left=cx+'px'; cur.style.top=cy+'px'; requestAnimationFrame(c); })();
+  document.querySelectorAll('a,button,.ind').forEach(el=>{
+    el.addEventListener('mouseenter',()=>cur.classList.add('big'));
+    el.addEventListener('mouseleave',()=>cur.classList.remove('big'));
+  });
+  /* magnetic buttons */
+  document.querySelectorAll('.magnet').forEach(btn=>{
+    btn.addEventListener('mousemove',e=>{
+      const r=btn.getBoundingClientRect();
+      btn.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.25}px,${(e.clientY-r.top-r.height/2)*.35}px)`;
+    });
+    btn.addEventListener('mouseleave',()=>{btn.style.transition='transform .6s cubic-bezier(.7,0,.2,1), color .5s';btn.style.transform='';});
+    btn.addEventListener('mouseenter',()=>{btn.style.transition='color .5s';});
+  });
+  /* 3D tilt + inner parallax layers for industry cards */
+  document.querySelectorAll('.tilt').forEach(card=>{
+    const layers = card.querySelectorAll('.layer');
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+      card.style.transform=`perspective(1000px) rotateY(${x*8}deg) rotateX(${-y*8}deg)`;
+      layers.forEach(l=>{const d=+l.dataset.depth; l.style.transform=`translate(${-x*d}px,${-y*d}px) scale(1.03)`;});
+    });
+    card.addEventListener('mouseleave',()=>{card.style.transform='';layers.forEach(l=>l.style.transform='');});
+  });
+} else {
+  cur.remove();
+  document.querySelectorAll('.ind').forEach(c=>c.addEventListener('click',()=>c.classList.toggle('active')));
+}
+
+/* ---------- Reveal on scroll + counters ---------- */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(!en.isIntersecting) return;
+    en.target.classList.add('in');
+    en.target.querySelectorAll('[data-count]').forEach(n=>{
+      const to=+n.dataset.count, t0=performance.now();
+      (function s(now){ const p=Math.min((now-t0)/1400,1); n.textContent=Math.round(to*(1-Math.pow(1-p,3)))+(p===1?'+':''); if(p<1)requestAnimationFrame(s); })(t0);
+    });
+    io.unobserve(en.target);
+  });
+},{threshold:.18, rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.rv,.clip').forEach((el,i)=>{ el.style.transitionDelay = (el.classList.contains('svc')? (i%5)*.08 : 0)+'s'; io.observe(el); });
+
+/* ---------- Page transition (morph curtain) ---------- */
+document.querySelectorAll('a[href$=".html"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    if(reduce||e.metaKey||e.ctrlKey) return;
+    e.preventDefault(); const h=a.getAttribute('href');
+    const p=document.getElementById('ptPath'),t0=performance.now(),dur=700;
+    (function f(now){const t=Math.min((now-t0)/dur,1),e2=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,top=100-e2*100,curve=Math.sin(t*Math.PI)*30;
+      p.setAttribute('d',`M0 ${top} Q50 ${top-curve} 100 ${top} V100 H0 Z`); if(t<1)requestAnimationFrame(f);else location.href=h;})(t0);
+  });
+});
+addEventListener('pageshow',e=>{if(e.persisted)document.getElementById('ptPath').setAttribute('d','M0 100 H100 V100 Z');});
+
+/* ---------- Mobile menu ---------- */
+const burger=document.querySelector('.burger'), menu=document.querySelector('nav ul');
+burger.addEventListener('click',()=>{burger.classList.toggle('open');menu.classList.toggle('open');});
+menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{burger.classList.remove('open');menu.classList.remove('open');}));
+</script>
+</body>
+</html>
